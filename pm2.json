@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "gdg-events-admin",
+            "script": "npm",
+            "args" : "start"
+        }
+    ]
+}
