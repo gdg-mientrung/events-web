@@ -2,13 +2,15 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@nuxtjs/auth": "^4.8.1",
-    "@nuxtjs/moment": "^1.2.0",
-    "@nuxtjs/pwa": "^2.6.0",
-    "@nuxtjs/vendor": "^1.1.6",
-    "nuxt": "^2.8.1",
-    "nuxt-property-decorator": "^2.3.0",
-    "class-transformer": "^0.2.3"
+    "@nuxtjs/auth": "4.8.1",
+    "@nuxtjs/moment": "1.2.0",
+    "@nuxtjs/pwa": "2.6.0",
+    "@nuxtjs/vendor": "1.1.6",
+    "ant-design-vue": "^1.4.0-beta.0",
+    "class-transformer": "0.2.3",
+    "firebase": "7.0.0",
+    "nuxt": "2.8.1",
+    "nuxt-property-decorator": "2.3.0"
   },
   "scripts": {
     "dev": "nuxt dev",
@@ -19,9 +21,9 @@
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
   "devDependencies": {
-    "ts-node": "^8.3.0",
     "@nuxt/typescript": "latest",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^7.1.0"
+    "node-sass": "4.12.0",
+    "sass-loader": "7.1.0",
+    "ts-node": "8.3.0"
   }
 }

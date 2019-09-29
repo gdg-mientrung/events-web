@@ -1,5 +1,5 @@
 import path from "path";
-import NuxtConfiguration from "@nuxt/config";
+import NuxtConfiguration from "nuxt";
 import webpack from "webpack";
 
 const config: NuxtConfiguration = {
@@ -27,12 +27,15 @@ const config: NuxtConfiguration = {
   },
   // loading: { color: '#3B8070' },
   css: ["~/assets/scss/app.scss"],
-  plugins: ["~/plugins/axios", "~/plugins/helpers"],
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/helpers",
+    "~/plugins/firebase",
+    "~/plugins/fireauth",
+    "~/plugins/antd-ui"
+  ],
   modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/vendor"],
-  toast: {
-    position: "bottom-left"
-  },
-  vendor: ["debounce"],
+  vendor: ["debounce", "ant-design-vue"],
   build: {
     // extractCSS: true,
     // hardSource: true,
@@ -68,9 +71,12 @@ const config: NuxtConfiguration = {
     color: "#80DDC8",
     height: "2px"
   },
-  auth: {
-    plugins: ["~/plugins/auth"],
-    strategies: {}
+  // auth: {
+  //   plugins: ["~/plugins/auth"],
+  //   strategies: {}
+  // },
+  router: {
+    middleware: "router-auth"
   }
 };
 

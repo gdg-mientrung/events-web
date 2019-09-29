@@ -4,11 +4,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom"
-    ],
+    "lib": ["esnext", "esnext.asynciterable", "dom"],
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowJs": true,
@@ -18,17 +14,10 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "~/*": ["./*"],
+      "@/*": ["./*"]
     },
-    "types": [
-      "@types/node",
-      "@nuxt/vue-app",
-    ],
+    "types": ["@types/node", "@nuxt/vue-app", "@ant-design-vue"]
   },
   "include": ["**/*.ts", "**/*.vue"],
   "exclude": ["node_modules"]

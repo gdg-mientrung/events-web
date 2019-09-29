@@ -1,6 +1,4 @@
-import { GetterTree, ActionContext, ActionTree, MutationTree } from "vuex";
-
-import axios from "axios";
+import { ActionContext, ActionTree, GetterTree, MutationTree } from "vuex";
 
 export const types = {};
 
