@@ -17,7 +17,7 @@
     <a-layout>
       <a-layout-header :style="{ background: '#fff', padding: 0 }">
         <a-menu mode="horizontal">
-          <a-sub-menu style="float: 'right'">
+          <a-sub-menu v-if="userInfo!=null">
             <div slot="title" class="submenu-title-wrapper">
               <a-avatar :src="userInfo.photoURL" />
             </div>
@@ -35,7 +35,7 @@
           <Nuxt />
         </div>
       </a-layout-content>
-      <a-layout-footer style="textAlign: center">Ant Design ©2018 Created by Ant UED</a-layout-footer>
+      <a-layout-footer style="textAlign: center">©2019 Created by datvt</a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
@@ -60,20 +60,11 @@ const userInfoStore = namespace("userInfo");
 })
 export default class extends Vue {
   @userInfoStore.Getter userInfo;
-  mounted() {
-    console.log(
-      "--------> JSON.stringify(this.userInfo, null, 2)" +
-        JSON.stringify(this.userInfo, null, 2)
-    );
-  }
+
+  mounted() {}
   async onLogout() {
-    // try {
     await fa.signOut();
-    //   // setTimeout(() => this.$router.push("login"), 3000);
-    //   // fa.signOut();
-    // } catch (e) {
-    //   console.log("--------> e" + e);
-    // }
+    await this.$router.push("login");
   }
   pages = [
     {
@@ -96,7 +87,9 @@ export default class extends Vue {
     console.log(broken);
   }
   navigateTo(page: string) {
-    this.$router.push(page);
+    this.$router.push({
+      name: page
+    });
   }
 }
 </script>

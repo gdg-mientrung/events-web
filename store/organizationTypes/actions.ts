@@ -6,21 +6,24 @@ import {
 } from "firebase/firebase-firestore";
 import { RootState } from "store";
 import { ActionContext, ActionTree } from "vuex";
-import { Mentor } from "~/modals";
+import { OrganizationType } from "~/modals";
 import { fs } from "~/plugins/firebase";
-import { MentorState } from "./state";
+import { OrganizationTypeState } from "./state";
 import { FETCH_END, FETCH_START } from "./types";
 
 export interface Actions<S, R> extends ActionTree<S, R> {
-  fetchMentors(
+  fetchOrganizationTypes(
     context: ActionContext<S, R>,
     params: { pagination: any; filters: any; sorter: any }
   ): void;
 }
 
-const actions: Actions<MentorState, RootState> = {
-  async fetchMentors({ commit, state }, { pagination, filters, sorter }) {
-    let colRef: CollectionReference = fs.collection("mentors");
+const actions: Actions<OrganizationTypeState, RootState> = {
+  async fetchOrganizationTypes(
+    { commit, state },
+    { pagination, filters, sorter }
+  ) {
+    let colRef: CollectionReference = fs.collection("organization");
     try {
       commit(FETCH_START);
 
@@ -29,6 +32,10 @@ const actions: Actions<MentorState, RootState> = {
       if (pagination) {
         colRef = colRef.limit(pagination.pageSize);
       }
+      console.log(
+        "--------> JSON.stringify(sorter, null, 2)" +
+          JSON.stringify(sorter, null, 2)
+      );
       if (sorter) {
         switch (sorter.order) {
           case "ascend":
@@ -42,13 +49,14 @@ const actions: Actions<MentorState, RootState> = {
       }
 
       let snap: QuerySnapshot = await colRef.get();
-      let mentors: Mentor[] = snap.docs.map((doc: QueryDocumentSnapshot) =>
-        plainToClass(Mentor, {
-          ...doc.data(),
-          id: doc.id
-        })
+      let organizationTypes: OrganizationType[] = snap.docs.map(
+        (doc: QueryDocumentSnapshot) =>
+          plainToClass(OrganizationType, {
+            ...doc.data(),
+            id: doc.id
+          })
       );
-      commit(FETCH_END, mentors);
+      commit(FETCH_END, organizationTypes);
     } catch (e) {
       console.error(e);
     }

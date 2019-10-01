@@ -58,5 +58,6 @@ declare module "vue/types/vue" {
   interface Vue {
     $auth: Auth;
     $t: any;
+    getBase64(img, callback);
   }
 }

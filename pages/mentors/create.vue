@@ -1,22 +1,19 @@
 <template>
-  <a-spin :spinning="isLoading || isUpdating || isUploadingImage" :delay="0">
-    <a-form :form="form" @submit="handleSubmit" v-if="mentor!=null">
+  <a-spin :spinning="isCreating || isUploadingImage">
+    <a-form :form="form" @submit="handleSubmit">
       <a-form-item label="Order" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-        <a-input
-          v-decorator="[
-          'order',
-          { initialValue: mentor.order ,
-            rules: [
-          { required: true, message: 'Please input order!' }]}
-        ]"
+        <a-input-number
+          v-decorator="['order', { initialValue: 0,  rules: [
+          { required: true, message: 'Please input order!' }] }]"
+          :min="1"
+          :max="10"
         />
       </a-form-item>
-
       <a-form-item label="Name" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
         <a-input
           v-decorator="[
           'name',
-          { initialValue: mentor.name ,
+          { 
             rules: [
           { required: true, message: 'Please input name!' }]}
         ]"
@@ -27,7 +24,7 @@
         <a-input
           v-decorator="[
           'title',
-          { initialValue: mentor.title ,
+          { 
             rules: [{ required: true, message: 'Please input title!' }]}
         ]"
         />
@@ -44,12 +41,7 @@
             :beforeUpload="beforeUpload"
             @change="handleChange"
           >
-            <img
-              v-if="photoURL || mentor.photo_url"
-              :src="photoURL|| mentor.photo_url"
-              alt="avatar"
-              class="avatar-image"
-            />
+            <img v-if="photoURL " :src="photoURL" alt="avatar" class="avatar-image" />
             <div v-else class="upload-image-area">
               <a-icon :type="loading ? 'loading' : 'plus'" />
               <div class="ant-upload-text">Upload</div>
@@ -59,8 +51,7 @@
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit">Edit</a-button>
-        <a-button class="danger-wrapper" type="danger" @click.prevent="onDelete">Delete</a-button>
+        <a-button type="primary" html-type="submit">Create</a-button>
       </a-form-item>
     </a-form>
   </a-spin>
@@ -84,16 +75,10 @@ import { Mentor } from "~/modals";
 
 const mentorStore = namespace("mentor");
 
-
 @Component({})
 export default class extends Vue {
-  @mentorStore.Action fetchMentor;
-  @mentorStore.Action updateMentor;
-  @mentorStore.Action deleteMentor;
-  @mentorStore.Getter isLoading;
-  @mentorStore.Getter isUpdating;
-  @mentorStore.Getter isDeleting;
-  @mentorStore.Getter mentor;
+  @mentorStore.Action createMentor;
+  @mentorStore.Getter isCreating;
 
   formLayout = "horizontal";
   form: any;
@@ -102,27 +87,26 @@ export default class extends Vue {
 
   async handleSubmit(e) {
     e.preventDefault();
-    this.$confirm({
-      title: "Do you want to update?",
-      content: "This cannot be undone",
-      onOk: () => {
-        this.submit();
-      },
-      onCancel: () => {}
-    });
+    this.submit();
   }
   submit() {
     this.form.validateFields(async (err, values) => {
+      const mentor: Mentor = {
+        ...values,
+        photo_url: this.photoURL
+      };
+      const id: string = await this.createMentor(mentor);
+      this.navigateToMentor(id);
       if (!err) {
-        const mentor: Mentor = {
-          ...this.mentor,
-          ...values,
-          photo_url: this.photoURL || this.mentor.photo_url
-        };
         console.log("Received values of form: ", values);
-        await this.updateMentor({ id: this.$route.params.id, mentor });
-        this.navigateToMentor(this.$route.params.id);
       }
+    });
+  }
+
+  navigateToMentor(id: string) {
+    this.$router.push({
+      name: "mentors-id",
+      params: { id }
     });
   }
 
@@ -181,38 +165,6 @@ export default class extends Vue {
 
   created() {
     this.form = this.$form.createForm(this);
-  }
-  mounted() {
-    this.fetchMentor(this.$route.params.id);
-  }
-  onDelete() {
-    this.showDeleteConfirm();
-  }
-  showDeleteConfirm() {
-    this.$confirm({
-      title: "Are you sure to delete ?",
-      content: "This cannot be undone",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk: this.onDeleteMentor,
-      onCancel: () => {}
-    });
-  }
-  async onDeleteMentor() {
-    const isSuccess: boolean = await this.deleteMentor(this.$route.params.id);
-    if (isSuccess) this.navigateToMentors();
-  }
-  navigateToMentor(id: string) {
-    this.$router.push({
-      name: "mentors-id",
-      params: { id }
-    });
-  }
-  navigateToMentors() {
-    this.$router.push({
-      name: "mentors"
-    });
   }
 }
 </script>

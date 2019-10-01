@@ -1,6 +1,6 @@
 import { MutationTree } from "vuex";
-import { Mentor } from "~/modals";
-import { MentorState } from "./state";
+import { OrganizationType } from "~/modals";
+import { OrganizationTypeState } from "./state";
 import {
   FETCH_END,
   FETCH_START,
@@ -12,19 +12,19 @@ import {
   DELETE_END
 } from "./types";
 
-const mutations: MutationTree<MentorState> = {
+const mutations: MutationTree<OrganizationTypeState> = {
   [FETCH_START](state) {
     state.isLoading = true;
   },
-  [FETCH_END](state, mentor: Mentor) {
-    state.mentor = mentor;
+  [FETCH_END](state, organizationType: OrganizationType) {
+    state.organizationType = organizationType;
     state.isLoading = false;
   },
   [UPDATE_START](state) {
     state.isUpdating = true;
   },
-  [UPDATE_END](state, mentor: Mentor) {
-    state.mentor = mentor;
+  [UPDATE_END](state, organizationType: OrganizationType) {
+    state.organizationType = organizationType;
     state.isUpdating = false;
   },
   [CREATE_START](state) {

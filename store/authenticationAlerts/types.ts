@@ -1,0 +1,2 @@
+export const SET_ERROR_ALERT = "SET_ERROR_ALERT";
+export const REMOVE_ERROR_ALERT = "REMOVE_ERROR_ALERT";

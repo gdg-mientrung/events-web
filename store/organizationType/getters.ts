@@ -1,9 +1,9 @@
 import { RootState } from "store";
 import { GetterTree } from "vuex";
-import { MentorState } from "./state";
+import { OrganizationTypeState } from "./state";
 
-const getters: GetterTree<MentorState, RootState> = {
-  mentor: state => state.mentor,
+const getters: GetterTree<OrganizationTypeState, RootState> = {
+  organizationType: state => state.organizationType,
   isLoading: state => state.isLoading,
   isUpdating: state => state.isUpdating,
   isCreating: state => state.isCreating
