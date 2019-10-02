@@ -34,7 +34,12 @@ const config: NuxtConfiguration = {
     "~/plugins/fireauth",
     "~/plugins/antd-ui"
   ],
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/vendor"],
+  modules: [
+    "@nuxtjs/axios",
+    "@nuxtjs/moment",
+    "@nuxtjs/auth",
+    "@nuxtjs/vendor"
+  ],
   vendor: ["debounce", "ant-design-vue"],
   build: {
     // extractCSS: true,

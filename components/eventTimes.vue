@@ -3,15 +3,16 @@
     <a-button html-type="submit" @click="onNavigateCreate">Create</a-button>
     <a-table
       :columns="columns"
-      :rowKey="eventDate => eventDate.id"
-      :dataSource="eventDates"
+      :rowKey="eventTime => eventTime.id"
+      :dataSource="eventTimes"
       :pagination="pagination"
       :loading="isLoading"
       @change="handleTableChange"
       :customRow="customRow"
     >
       <template slot="id" slot-scope="id">{{id.substring(0, 6) + '...'}}</template>
-      <template slot="date" slot-scope="date">{{date.format('L')}}</template>
+      <template slot="from" slot-scope="from">{{from.format('LT')}}</template>
+      <template slot="to" slot-scope="to">{{to.format('LT')}}</template>
     </a-table>
   </div>
 </template>
@@ -26,13 +27,13 @@ import {
 } from "nuxt-property-decorator";
 import { plainToClass } from "class-transformer";
 import { Pagination } from "ant-design-vue";
-const eventDatesStore = namespace("eventDates");
+const eventTimesStore = namespace("eventTimes");
 
 @Component({})
 export default class extends Vue {
-  @eventDatesStore.Action fetchEventDates;
-  @eventDatesStore.Getter isLoading;
-  @eventDatesStore.Getter eventDates;
+  @eventTimesStore.Action fetchEventTimes;
+  @eventTimesStore.Getter isLoading;
+  @eventTimesStore.Getter eventTimes;
 
   pagination = {
     pageSize: 10,
@@ -47,11 +48,17 @@ export default class extends Vue {
       scopedSlots: { customRender: "id" }
     },
     {
-      title: "Date",
-      dataIndex: "date",
+      title: "From",
+      dataIndex: "from",
       sorter: true,
       defaultSortOrder: "ascend",
-      scopedSlots: { customRender: "date" }
+      scopedSlots: { customRender: "from" }
+    },
+    {
+      title: "To",
+      dataIndex: "to",
+      sorter: true,
+      scopedSlots: { customRender: "to" }
     },
     {
       title: "Name",
@@ -62,33 +69,40 @@ export default class extends Vue {
   customRow(record) {
     return {
       on: {
-        click: () => this.navigateToEventDate(record.id)
+        click: () => this.navigateToEventTime(record.id)
       }
     };
   }
 
-  navigateToEventDate(id: string) {
+  navigateToEventTime(id: string) {
     this.$router.push({
-      name: "schedules-id",
-      params: { id }
+      name: "schedules-id-timelines-sub_id",
+      params: { id: this.$route.params.id, sub_id: id }
     });
   }
 
   onNavigateCreate() {
     this.$router.push({
-      name: "schedules-create"
+      name: "schedules-id-timelines-create",
+      params: this.$route.params
     });
   }
   onChange(a, b, c) {
     console.log(a, b, c);
   }
   mounted() {
-    this.fetchEventDates({
+    this.fetchEventTimes({
+      eventDateId: this.$route.params.id,
       pagination: this.pagination
     });
   }
   handleTableChange(pagination, filters, sorter) {
-    this.fetchEventDates({ pagination, filters, sorter });
+    this.fetchEventTimes({
+      eventDateId: this.$route.params.id,
+      pagination,
+      filters,
+      sorter
+    });
   }
 }
 </script>

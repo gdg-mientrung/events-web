@@ -2,32 +2,30 @@ import { plainToClass } from "class-transformer";
 import {
   QueryDocumentSnapshot,
   QuerySnapshot,
-  CollectionReference,
-  DocumentReference
+  CollectionReference
 } from "firebase/firebase-firestore";
 import { RootState } from "store";
 import { ActionContext, ActionTree } from "vuex";
-import { Organization } from "~/modals";
+import { EventTime } from "~/modals";
 import { fs } from "~/plugins/firebase";
-import { OrganizationState } from "./state";
+import { EventTimeState } from "./state";
 import { FETCH_END, FETCH_START } from "./types";
 
 export interface Actions<S, R> extends ActionTree<S, R> {
-  fetchOrganizations(
+  fetchEventTimes(
     context: ActionContext<S, R>,
-    params: { typeId: string; pagination: any; filters: any; sorter: any }
+    params: { eventDateId: string; pagination: any; filters: any; sorter: any }
   ): void;
 }
 
-const actions: Actions<OrganizationState, RootState> = {
-  async fetchOrganizations(
+const actions: Actions<EventTimeState, RootState> = {
+  async fetchEventTimes(
     { commit, state },
-    { typeId, pagination, filters, sorter }
+    { eventDateId, pagination, filters, sorter }
   ) {
     let colRef: CollectionReference = fs.collection(
-      `organization/${typeId}/organizations`
+      `schedule/${eventDateId}/timeline`
     );
-
     try {
       commit(FETCH_START);
 
@@ -49,14 +47,14 @@ const actions: Actions<OrganizationState, RootState> = {
       }
 
       let snap: QuerySnapshot = await colRef.get();
-      let organizations: Organization[] = snap.docs.map(
+      let eventTimes: EventTime[] = snap.docs.map(
         (doc: QueryDocumentSnapshot) =>
-          plainToClass(Organization, {
+          plainToClass(EventTime, {
             ...doc.data(),
             id: doc.id
           })
       );
-      commit(FETCH_END, organizations);
+      commit(FETCH_END, eventTimes);
     } catch (e) {
       console.error(e);
     }

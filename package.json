@@ -10,7 +10,8 @@
     "class-transformer": "0.2.3",
     "firebase": "7.0.0",
     "nuxt": "2.8.1",
-    "nuxt-property-decorator": "2.3.0"
+    "nuxt-property-decorator": "2.3.0",
+    "reflect-metadata": "^0.1.13"
   },
   "scripts": {
     "dev": "nuxt dev",
