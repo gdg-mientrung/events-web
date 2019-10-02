@@ -73,7 +73,7 @@ export default class extends Vue {
     },
     {
       label: "Organizations",
-      name: "organizations"
+      name: "organizationTypes"
     },
     {
       label: "Schedules",

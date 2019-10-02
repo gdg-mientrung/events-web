@@ -3,13 +3,12 @@
     <a-button html-type="submit" @click="onNavigateCreate">Create</a-button>
     <a-table
       :columns="columns"
-      :rowKey="organizationType => organizationType.id"
-      :dataSource="organizationTypes"
+      :rowKey="organization => organization.id"
+      :dataSource="organizations"
       :pagination="pagination"
       :loading="isLoading"
       @change="handleTableChange"
       :customRow="customRow"
-      :scroll="{ x: true}"
     >
       <template slot="id" slot-scope="id">{{id.substring(0, 6) + '...'}}</template>
       <template slot="photo_url" slot-scope="photo_url">
@@ -35,25 +34,13 @@ import {
 } from "nuxt-property-decorator";
 import { plainToClass } from "class-transformer";
 import { Pagination } from "ant-design-vue";
-const organizationTypesStore = namespace("organizationTypes");
-
-const initialSorter = {
-  column: {
-    title: "Order",
-    dataIndex: "order",
-    sorter: true,
-    defaultSortOrder: "ascend"
-  },
-  order: "ascend",
-  field: "order",
-  columnKey: "order"
-};
+const organizationsStore = namespace("organizations");
 
 @Component({})
 export default class extends Vue {
-  @organizationTypesStore.Action fetchOrganizationTypes;
-  @organizationTypesStore.Getter isLoading;
-  @organizationTypesStore.Getter organizationTypes;
+  @organizationsStore.Action fetchOrganizations;
+  @organizationsStore.Getter isLoading;
+  @organizationsStore.Getter organizations;
 
   pagination = {
     pageSize: 10,
@@ -68,48 +55,53 @@ export default class extends Vue {
       scopedSlots: { customRender: "id" }
     },
     {
-      title: "Order",
-      dataIndex: "order",
-      sorter: true,
-      defaultSortOrder: "ascend"
+      title: "Name",
+      dataIndex: "name",
+      sorter: true
     },
     {
-      title: "Type",
-      dataIndex: "type",
-      sorter: true
+      title: "Photo",
+      dataIndex: "photo_url",
+      scopedSlots: { customRender: "photo_url" }
     }
   ];
   customRow(record) {
     return {
       on: {
-        click: () => this.navigateToOrganizationType(record.id)
+        click: () => this.navigateToOrganization(record.id)
       }
     };
   }
 
-  navigateToOrganizationType(id: string) {
+  navigateToOrganization(id: string) {
     this.$router.push({
-      name: "organizations-id",
-      params: { id }
+      name: "organizationTypes-id-organizations-sub_id",
+      params: { id: this.$route.params.id, sub_id: id }
     });
   }
 
   onNavigateCreate() {
     this.$router.push({
-      name: "organizations-create"
+      name: "organizationTypes-id-organizations-create",
+      params: this.$route.params
     });
   }
   onChange(a, b, c) {
     console.log(a, b, c);
   }
   mounted() {
-    this.fetchOrganizationTypes({
-      pagination: this.pagination,
-      sorter: initialSorter
+    this.fetchOrganizations({
+      typeId: this.$route.params.id,
+      pagination: this.pagination
     });
   }
   handleTableChange(pagination, filters, sorter) {
-    this.fetchOrganizationTypes({ pagination, filters, sorter });
+    this.fetchOrganizations({
+      typeId: this.$route.params.id,
+      pagination,
+      filters,
+      sorter
+    });
   }
 }
 </script>

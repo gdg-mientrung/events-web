@@ -10,6 +10,9 @@
       </div>
       <a-button @click="onNavigateEdit">Edit</a-button>
     </a-spin>
+    <hr />
+    <p>Organizations</p>
+    <v-organizations></v-organizations>
   </div>
 </template>
 
@@ -24,9 +27,15 @@ import {
 } from "nuxt-property-decorator";
 import { plainToClass } from "class-transformer";
 import { Pagination } from "ant-design-vue";
+import VOrganizations from "~/components/organizations.vue";
+
 const organizationTypeStore = namespace("organizationType");
 
-@Component({})
+@Component({
+  components: {
+    VOrganizations
+  }
+})
 export default class extends Vue {
   @organizationTypeStore.Action fetchOrganizationType;
   @organizationTypeStore.Getter isLoading;
@@ -36,8 +45,8 @@ export default class extends Vue {
   }
   onNavigateEdit() {
     this.$router.push({
-      name: "organizations-id-update",
-      params: { id: this.$route.params.id }
+      name: "organizationTypes-id-update",
+      params: this.$route.params
     });
   }
 }

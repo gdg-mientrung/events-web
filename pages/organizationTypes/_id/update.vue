@@ -117,13 +117,13 @@ export default class extends Vue {
   }
   navigateToOrganizationType(id: string) {
     this.$router.push({
-      name: "organizations-id",
+      name: "organizationTypes-id",
       params: { id }
     });
   }
   navigateToOrganizationTypes() {
     this.$router.push({
-      name: "organizations"
+      name: "organizationTypes"
     });
   }
 }
