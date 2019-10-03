@@ -23,7 +23,6 @@ async function isAdmin(
 
 const actions: Actions<AuthenticationAlertsState, RootState> = {
   async login({ commit, state }, id: string): Promise<boolean> {
-    console.log("--------> login");
     commit("authenticationAlerts/SET_ERROR_ALERT", "", { root: true });
     try {
       const userCredential: firebase.auth.UserCredential = await fa.signInWithPopup(

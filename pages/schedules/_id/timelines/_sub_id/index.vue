@@ -14,6 +14,9 @@
       </div>
       <a-button @click="onNavigateEdit">Edit</a-button>
     </a-spin>
+    <hr />
+    <p>Timeline</p>
+    <v-activities></v-activities>
   </div>
 </template>
 
@@ -28,9 +31,12 @@ import {
 } from "nuxt-property-decorator";
 import { plainToClass } from "class-transformer";
 import { Pagination } from "ant-design-vue";
+import VActivities from "~/components/activities.vue";
 const eventTimeStore = namespace("eventTime");
 
-@Component({})
+@Component({
+  components: { VActivities }
+})
 export default class extends Vue {
   @eventTimeStore.Action fetchEventTime;
   @eventTimeStore.Getter isLoading;

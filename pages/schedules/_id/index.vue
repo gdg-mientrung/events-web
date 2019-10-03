@@ -10,7 +10,7 @@
       </div>
       <a-button @click="onNavigateEdit">Edit</a-button>
     </a-spin>
-      <hr />
+    <hr />
     <p>Timeline</p>
     <v-event-times></v-event-times>
   </div>
@@ -31,7 +31,7 @@ import VEventTimes from "~/components/eventTimes.vue";
 const eventDateStore = namespace("eventDate");
 
 @Component({
-  components:{VEventTimes}
+  components: { VEventTimes }
 })
 export default class extends Vue {
   @eventDateStore.Action fetchEventDate;
